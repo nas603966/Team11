@@ -1,37 +1,43 @@
 import { Link } from 'react-router-dom';
 
-function Navbar() {
+const Navbar = ({ isAuthenticated, onLogout }) => {
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-blue-600 text-white shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl font-bold text-gray-800">
+        <div className="flex justify-between items-center py-4">
+          <Link to="/" className="text-xl font-bold">
             FixItNow Helpdesk
           </Link>
+          
           <div className="flex space-x-4">
-            <Link
-              to="/"
-              className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md"
-            >
+            <Link to="/" className="hover:text-blue-200">
               Home
             </Link>
-            <Link
-              to="/submit-ticket"
-              className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md"
-            >
+            <Link to="/submit-ticket" className="hover:text-blue-200">
               Submit Ticket
             </Link>
-            <Link
-              to="/admin"
-              className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md"
-            >
-              Admin Dashboard
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/admin" className="hover:text-blue-200">
+                  Admin Dashboard
+                </Link>
+                <button 
+                  onClick={onLogout}
+                  className="hover:text-blue-200"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link to="/admin/login" className="hover:text-blue-200">
+                Admin Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar; 

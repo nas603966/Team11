@@ -3,6 +3,8 @@ import axios from 'axios';
 
 function AdminDashboard({ tickets, updateTicketStatus }) {
   const handleStatusChange = (ticketId, newStatus) => {
+    console.log('AdminDashboard - handleStatusChange:', { ticketId, newStatus });
+    console.log('Ticket ID type:', typeof ticketId);
     updateTicketStatus(ticketId, newStatus);
   };
 
@@ -63,9 +65,9 @@ function AdminDashboard({ tickets, updateTicketStatus }) {
                     onChange={(e) => handleStatusChange(ticket._id, e.target.value)}
                     className="border rounded px-2 py-1"
                   >
-                    <option value="Open">Open</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Closed">Closed</option>
+                    <option value="open">Open</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="closed">Closed</option>
                   </select>
                 </td>
                 <td className="px-6 py-4 border-b">

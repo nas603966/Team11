@@ -1,15 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
 const ticketRoutes = require('./routes/ticketRoutes');
-const { isAdmin } = require('./middleware/auth');
+const adminRoutes = require('./routes/adminRoutes');
+const { verifyToken, isAdmin } = require('./middleware/auth');
 
 // Load environment variables
 dotenv.config();
-
-// Connect to MongoDB
-connectDB();
 
 // Create Express app
 const app = express();
@@ -19,11 +16,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+  next();
+});
+
 // Routes
 app.use('/api/tickets', ticketRoutes);
 
 // Admin routes (protected)
-app.use('/api/admin/tickets', isAdmin, ticketRoutes);
+app.use('/api/admin/tickets', verifyToken, isAdmin, ticketRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
